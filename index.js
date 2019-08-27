@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 require('dotenv').config()
 const async = require('async')
 const fs = require('fs')
