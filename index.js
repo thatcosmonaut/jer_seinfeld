@@ -1,10 +1,10 @@
-require('dotenv').config()
 const async = require('async')
 const fs = require('fs')
 const TootDownloader = require('./toot-downloader.js')
 const TootProcessor = require('./toot-processor.js')
 const TootPoster = require('./toot-poster.js')
 const exec = require('child_process').execSync;
+const path = require('path');
 
 async function main()
 {
@@ -12,13 +12,14 @@ async function main()
 
     var toots = []
 
-    if(fs.existsSync('toots.json'))
+    var tootsPath = path.resolve(__dirname, "toots.json");
+    if(fs.existsSync(tootsPath))
     {
-        toots = await TootDownloader.updateToots('toots.json', jerID)
+        toots = await TootDownloader.updateToots(tootsPath, jerID)
     }
     else
     {
-        toots = await TootDownloader.downloadAllToots('toots.json', jerID)
+        toots = await TootDownloader.downloadAllToots(tootsPath, jerID)
     }
 
     notReTootedToots = toots.filter((toot) => !toot.reblog)
@@ -35,7 +36,7 @@ async function main()
         './images/jerry8.png'
     ];
 
-    var jerry = jerrys[Math.floor(Math.random() * jerrys.length)];
+    var jerry = path.resolve(__dirname, jerrys[Math.floor(Math.random() * jerrys.length)]);
 
     var randomToot = notSensitiveToots[Math.floor(Math.random() * notSensitiveToots.length)].content;
     
@@ -44,7 +45,7 @@ async function main()
     console.log(randomToot);
     console.log(processedToot);
 
-    exec(`convert -background 'rgba(0, 255, 255, 0)' -fill white -size 640x320 -pointsize 32 -gravity South caption:'${processedToot}' caption.png`, (err, stdout, stderr) => {
+    exec(`convert -background 'rgba(0, 255, 255, 0)' -fill white -size 640x320 -pointsize 32 -gravity South caption:'${processedToot}' ${path.resolve(__dirname, "caption.png")}`, (err, stdout, stderr) => {
         console.log(`stdout: ${stdout}`);
         console.log(`stderr: ${stderr}`);
         if (err) {
@@ -54,7 +55,7 @@ async function main()
 
     console.log(jerry + " chosen");
 
-    exec(`composite -gravity South -geometry +0+30 caption.png ${jerry} final.png`, (err, stdout, stderr) => {
+    exec(`composite -gravity South -geometry +0+30 ${path.resolve(__dirname, "caption.png")} ${jerry} ${path.resolve(__dirname, "final.png")}`, (err, stdout, stderr) => {
         console.log(`stdout: ${stdout}`);
         console.log(`stderr: ${stderr}`);
         if (err) {

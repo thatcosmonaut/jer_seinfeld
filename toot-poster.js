@@ -1,9 +1,11 @@
 const fs = require('fs')
 const Mastodon = require('mastodon')
+const env = require('./env.json')
+const path = require('path')
 
 var M = new Mastodon({
-    access_token: process.env.OUTPUT_MASTODON_ACCESS_TOKEN,
-    api_url: process.env.OUTPUT_MASTODON_API 
+    access_token: env.OUTPUT_MASTODON_ACCESS_TOKEN,
+    api_url: env.OUTPUT_MASTODON_API 
 })
 
 exports.postToot = async function (string)
@@ -15,7 +17,7 @@ exports.postToot = async function (string)
 
 exports.postImage = async function (description)
 {
-    M.post('media', { file: fs.createReadStream('./final.png'), description: description }).then(resp => {
+    M.post('media', { file: fs.createReadStream(path.resolve(__dirname, './final.png')), description: description }).then(resp => {
         const id = resp.data.id;
         M.post('statuses', { status: '', media_ids: [id] })
     })

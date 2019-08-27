@@ -1,11 +1,12 @@
 const Mastodon = require('mastodon')
 var fs = require('fs')
 const FileOps = require('./file-ops.js')
+const env = require('./env.json')
 
 
 var M = new Mastodon({
-    access_token: process.env.INPUT_MASTODON_ACCESS_TOKEN,
-    api_url: process.env.INPUT_MASTODON_API
+    access_token: env.INPUT_MASTODON_ACCESS_TOKEN,
+    api_url: env.INPUT_MASTODON_API
 })
 
 exports.getAccountID = async function()
