@@ -22,8 +22,7 @@ async function main()
         toots = await TootDownloader.downloadAllToots(tootsPath, jerID)
     }
 
-    notReTootedToots = toots.filter((toot) => !toot.reblog)
-    notSensitiveToots = notReTootedToots.filter((toot) => !toot.sensitive)
+    filteredToots = toots.filter((toot) => !toot.reblog && !toot.sensitive && toot.in_reply_to_id == null && toot.in_reply_to_account_id == null);
 
     var jerrys = [
         './images/jerry1.png',
@@ -38,7 +37,7 @@ async function main()
 
     var jerry = path.resolve(__dirname, jerrys[Math.floor(Math.random() * jerrys.length)]);
 
-    var randomToot = notSensitiveToots[Math.floor(Math.random() * notSensitiveToots.length)].content;
+    var randomToot = filteredToots[Math.floor(Math.random() * filteredToots.length)].content;
     
     var processedToot = "JERRY: " + TootProcessor.processToot(randomToot);
 
