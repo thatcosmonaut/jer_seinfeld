@@ -23,5 +23,5 @@ function unescapeToot(toot)
 
 exports.processToot = function(toot)
 {
-    return unescapeToot(stripAtsFromToot(stripHTMLTagsFromToot(toot)))
+    return unescapeToot(stripAtsFromToot(stripHTMLTagsFromToot(convertBRToEscapeLineBreak(toot))))
 }
