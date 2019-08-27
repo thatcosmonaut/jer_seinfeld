@@ -22,7 +22,7 @@ async function main()
         toots = await TootDownloader.downloadAllToots(tootsPath, jerID)
     }
 
-    filteredToots = toots.filter((toot) => !toot.reblog && !toot.sensitive && toot.in_reply_to_id == null && toot.in_reply_to_account_id == null);
+    filteredToots = toots.filter((toot) => !toot.reblog && !toot.sensitive && toot.in_reply_to_id == jerID && toot.in_reply_to_account_id == jerID);
 
     var jerrys = [
         './images/jerry1.png',
